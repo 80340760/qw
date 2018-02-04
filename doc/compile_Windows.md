@@ -13,6 +13,7 @@
 - during the install chose the components
   - `Desktop development with C++` (left side)
   - `VC++ 2015.3 v140 toolset for desktop` (right side)
+  - Since release of VS2017 15.5 (12/04/17), require `VC++ 2017 version 15.4 v14.11 toolset` (under tab `Individual Components`, section `Compilers, build tools, and runtimes`), as CUDA 9.1 is not compatible with compiler 14.12.X
 
 ### CMake for Win64
 
@@ -22,9 +23,9 @@
 
 ### Cuda 8.0+ (only needed to use NVIDIA GPUs)
 
-- donwload and install [https://developer.nvidia.com/cuda-downloads](https://developer.nvidia.com/cuda-downloads)
+- download and install [https://developer.nvidia.com/cuda-downloads](https://developer.nvidia.com/cuda-downloads)
 - for minimal install choose `Custom installation options` during the install and select
-    - CUDA/Develpment
+    - CUDA/Development
     - CUDA/Visual Studio Integration (ignore the warning during the install that VS2017 is not supported)
     - CUDA/Runtime
     - Driver components
@@ -75,16 +76,21 @@
 
 ## Compile
 
-- download and unzip `xmr-stak`
+- download `xmr-stak` [Source Code.zip](https://github.com/fireice-uk/xmr-stak/releases) and save to a location in your home folder (C:\Users\USERNAME\)
+- extract the Source Code.zip file
 - open the command line terminal `cmd`
-- `cd` to your unzipped source code directory
-- execute the following commands (NOTE: path to VS2017 can be different)
+- `cd` to the extracted source code directory
+- execute the following commands (NOTE: path to Visual Studio 2017 Community can be different)
   ```
+  # Next line is only if compiling for Cuda 9.1 and using Visual Studio 2017 >= 15.5 (released 12/04/17)
+  "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=14.11  
   "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsMSBuildCmd.bat"
   set CMAKE_PREFIX_PATH=C:\xmr-stak-dep\hwloc;C:\xmr-stak-dep\libmicrohttpd;C:\xmr-stak-dep\openssl
   mkdir build
   cd build
   ```
+  - Sometimes Windows will `cd` to `C:\Users\USERNAME\source\build\` instead of `C:\Users\USERNAME\xmr-stak-<version>\build`. Ensure you are in the correct `build` directory before proceeding. 
+  
   - for CUDA 8*
     ```
     cmake -G "Visual Studio 15 2017 Win64" -T v140,host=x64 ..
